@@ -1,0 +1,99 @@
+import FormField from '../../components/FormField';
+import { useState } from 'react';
+import Button from '../../components/Button';
+import './LoginPage.css';
+import { login } from './auth/service';
+import { useAuth } from './auth/context';
+import { useLocation, useNavigate } from 'react-router';
+
+function LoginPage() {
+  const { onLogin } = useAuth();
+  const [credentials, setCredentials] = useState({
+    email: '',
+    password: '',
+  });
+  const [error, setError] = useState(null);
+  const [isFetching, setIsFeching] = useState(false);
+
+  const { email, password } = credentials;
+  const buttonDisabled = !(email && password) || isFetching;
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleSubmit = async event => {
+    event.preventDefault();
+
+    try {
+      setIsFeching(true);
+      await login(credentials);
+      setIsFeching(false);
+      onLogin();
+      const to = location?.state?.from?.pathname || '/';
+      navigate(to);
+    } catch (error) {
+      setIsFeching(false);
+      setError(error);
+    }
+  };
+
+  const handleChange = event => {
+    setCredentials(currentCredentials => ({
+      ...currentCredentials,
+      [event.target.name]: event.target.value,
+    }));
+  };
+
+  const handleClick = () => navigate('/signup');
+
+  const resetError = () => {
+    setError(null);
+  };
+
+  return (
+    <div className="loginPage">
+      <h1 className="loginPage-title">Log in NodePoP</h1>
+      <form onSubmit={handleSubmit}>
+        <FormField
+          type="text"
+          name="email"
+          label="email"
+          className="loginForm-field"
+          onChange={handleChange}
+          value={credentials.email}
+        />
+        <FormField
+          type="password"
+          name="password"
+          label="password"
+          className="loginForm-field"
+          onChange={handleChange}
+          value={credentials.password}
+        />
+        <Button
+          type="submit"
+          $variant="primary"
+          disabled={buttonDisabled}
+          className="loginForm-submit"
+        >
+          {isFetching ? 'Connecting...' : 'Log in'}
+        </Button>
+        <Button
+          type="submit"
+          $variant="primary"
+          disabled={buttonDisabled}
+          className="loginForm-submit"
+          onClick={handleClick}
+        >
+          Sign Up
+        </Button>
+        {error && (
+          <div className="loginPage-error" onClick={resetError}>
+            {error.message}
+          </div>
+        )}
+      </form>
+    </div>
+  );
+}
+
+export default LoginPage;
