@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import FormField from '../../components/FormField';
-import Button from '../../components/Button';
-import '../loginPage/LoginPage.css';
-import { signup } from './service';
+import FormField from '../../components/tools/FormField';
+import Button from '../../components/tools/Button';
+import '../loginPage/loginPage.css';
+import { signup } from '../../components/auth/service';
 import { useLocation, useNavigate } from 'react-router';
+import Modal from '../../components/tools/Modal';
 
 function SignUpPage() {
   const [error, setError] = useState(null);
@@ -25,17 +26,59 @@ function SignUpPage() {
   const { email, password, username, name } = credentials;
   const buttonDisabled = !(email && password && username && name) || isFetching;
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState(null);
+
+  const [signupResponse, setSignupResponse] = useState(null);
+
+  const openSuccessModal = () => {
+    setIsModalOpen(true);
+    setModalContent(
+      <>
+        <h2>Registro exitoso</h2>
+        <div>¡Te has registrado correctamente!</div>
+      </>,
+    );
+  };
+
+  const openErrorModal = () => {
+    setIsModalOpen(true);
+    setModalContent(
+      <>
+        <h2>Error</h2>
+        <div>No se ha podido registrar, intentalo de nuevo.</div>
+      </>,
+    );
+  };
+
+  const handleAccept = () => {
+    setIsModalOpen(false);
+    setModalContent(null);
+    try {
+      if (signupResponse?.email !== undefined) {
+        const to = location?.state?.from?.pathname || '/login';
+        navigate(to);
+      }
+    } catch (error) {
+      setIsFeching(false);
+      setError(error);
+    }
+  };
+
   const handleSubmit = async event => {
     event.preventDefault();
 
     try {
       setIsFeching(true);
-      await signup(credentials);
+      const response = await signup(credentials);
+      setSignupResponse(response);
       setIsFeching(false);
-      const to = location?.state?.from?.pathname || '/login';
-      navigate(to);
+
+      // Usuario registrado
+      openSuccessModal();
     } catch (error) {
       setIsFeching(false);
+      openErrorModal();
       setError(error);
     }
   };
@@ -94,6 +137,9 @@ function SignUpPage() {
           </div>
         )}
       </form>
+      <Modal isOpen={isModalOpen} onAccept={handleAccept}>
+        {modalContent}
+      </Modal>
     </div>
   );
 }

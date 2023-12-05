@@ -1,0 +1,75 @@
+.advert {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.card-content {
+  display: flex;
+}
+
+.advert-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.advert-name {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  text-decoration: none;
+  color: #333;
+}
+
+.advert-photo {
+  margin-bottom: 8px;
+}
+
+.advert-image {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 4px;
+  display: block;
+  margin: auto;
+}
+
+.advert-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.advert-sale {
+  font-weight: bold;
+}
+
+.advert-sale-bg {
+  background-color: #ffcccc;
+}
+
+.advert-purchase-bg {
+  background-color: #ccffcc;
+}
+
+.advert-tags {
+  font-size: 12px;
+  color: #555;
+  margin-top: 8px;
+}
+
+.advert-text {
+  font-size: 14px;
+  color: #333;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}

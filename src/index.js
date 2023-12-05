@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
-import storage from './utils/storage';
+import storage from './components/tools/storage';
 import { setAuthorizationHeader } from './api/host';
-import { AuthContextProvider } from './pages/loginPage/auth/context';
+import { AuthContextProvider } from './components/auth/context';
 
 const accessToken = storage.get('auth');
 if (accessToken) {

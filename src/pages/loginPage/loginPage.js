@@ -1,9 +1,9 @@
-import FormField from '../../components/FormField';
+import FormField from '../../components/tools/FormField';
 import { useState } from 'react';
-import Button from '../../components/Button';
-import './LoginPage.css';
-import { login } from './auth/service';
-import { useAuth } from './auth/context';
+import Button from '../../components/tools/Button';
+import './loginPage.css';
+import { login } from '../../components/auth/service';
+import { useAuth } from '../../components/auth/context';
 import { useLocation, useNavigate } from 'react-router';
 
 function LoginPage() {
@@ -11,6 +11,7 @@ function LoginPage() {
   const [credentials, setCredentials] = useState({
     email: '',
     password: '',
+    rememberMe: false,
   });
   const [error, setError] = useState(null);
   const [isFetching, setIsFeching] = useState(false);
@@ -28,6 +29,7 @@ function LoginPage() {
       await login(credentials);
       setIsFeching(false);
       onLogin();
+
       const to = location?.state?.from?.pathname || '/';
       navigate(to);
     } catch (error) {
@@ -44,6 +46,13 @@ function LoginPage() {
   };
 
   const handleClick = () => navigate('/signup');
+
+  const handleRememberMeChange = event => {
+    setCredentials(currentCredentials => ({
+      ...currentCredentials,
+      rememberMe: event.target.checked,
+    }));
+  };
 
   const resetError = () => {
     setError(null);
@@ -69,6 +78,15 @@ function LoginPage() {
           onChange={handleChange}
           value={credentials.password}
         />
+        <label>
+          Recordar contraseña:
+          <input
+            type="checkbox"
+            name="rememberMe"
+            checked={credentials.rememberMe}
+            onChange={handleRememberMeChange}
+          />
+        </label>
         <Button
           type="submit"
           $variant="primary"

@@ -1,0 +1,1 @@
+export { NewAdvertPage } from './newAdvertPage';

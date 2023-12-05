@@ -1,0 +1,49 @@
+/* newAdvertPage.css */
+
+/* Estilos para el formulario */
+.newAdvertForm {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.newAdvertForm label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.newAdvertForm input[type='text'],
+.newAdvertForm input[type='number'],
+.newAdvertForm select,
+.newAdvertForm input[type='file'] {
+  width: calc(100% - 10px);
+  padding: 8px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.newAdvertForm input[type='file'] {
+  padding: 5px;
+}
+
+.newAdvertForm .newTweetPage-footer {
+  text-align: right;
+}
+
+.newAdvertForm .newTweetPage-submit {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  background-color: #4caf50;
+  color: white;
+  cursor: pointer;
+}
+
+.newAdvertForm .newTweetPage-submit:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
