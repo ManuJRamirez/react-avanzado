@@ -1,7 +1,7 @@
 import FormField from '../../components/tools/FormField';
 import { useState } from 'react';
 import Button from '../../components/tools/Button';
-import './loginPage.css';
+import './LoginPage.css';
 import { login } from '../../components/auth/service';
 import { useAuth } from '../../components/auth/context';
 import { useLocation, useNavigate } from 'react-router';

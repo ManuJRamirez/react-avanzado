@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import FormField from '../../components/tools/FormField';
 import Button from '../../components/tools/Button';
-import '../loginPage/loginPage.css';
+import '../loginPage/LoginPage.css';
 import { signup } from '../../components/auth/service';
 import { useLocation, useNavigate } from 'react-router';
 import Modal from '../../components/tools/Modal';
