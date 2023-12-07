@@ -25,6 +25,7 @@ function AdvertsPage() {
     getAllAdverts().then(adverts => {
       setAdverts(adverts);
       setFilteredAdverts(adverts);
+      setNoResults(adverts.length === 0);
     });
   }, []);
 
@@ -66,36 +67,36 @@ function AdvertsPage() {
     }
 
     setFilteredAdverts(filtered);
-
-    if (filtered.length === 0) {
-      setNoResults(true);
-    } else {
-      setNoResults(false);
-    }
+    setNoResults(filtered.length === 0);
   };
 
   return (
     <Content title="Anuncios disponible">
       <div className="advertsPage">
-        <div className="filters">
-          <Filters handleFilter={handleFilter} />
-        </div>
-        {noResults ? (
-          <div className="no-results">
-            No hay anuncios disponibles después del filtrado
-          </div>
-        ) : (
-          <ul className="adverts-list">
-            {filteredAdverts.map(({ id, ...advert }) => (
-              <li key={id}>
-                <Link to={`${id}`}>
-                  <Advert {...advert} />
-                </Link>
-              </li>
-            ))}
-          </ul>
+        {noResults && adverts.length === 0 && <EmptyList />}
+        {!noResults && (
+          <>
+            <div className="filters">
+              <Filters handleFilter={handleFilter} />
+            </div>
+            {filteredAdverts.length === 0 && (
+              <div className="no-results">
+                No hay anuncios disponibles después del filtrado
+              </div>
+            )}
+            {filteredAdverts.length > 0 && (
+              <ul className="adverts-list">
+                {filteredAdverts.map(({ id, ...advert }) => (
+                  <li key={id}>
+                    <Link to={`${id}`}>
+                      <Advert {...advert} />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </>
         )}
-        {adverts.length === 0 && <EmptyList />}
       </div>
     </Content>
   );

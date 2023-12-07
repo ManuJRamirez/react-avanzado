@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { deleteOneAdvert, getOneAdvert } from '../../components/auth/service';
 import ModalQuestion from '../../components/tools/ModalQuestion';
 import Modal from '../../components/tools/Modal';
+import './advertPage.css';
 
 function AdvertPage() {
   const params = useParams();
@@ -26,7 +27,19 @@ function AdvertPage() {
   }, [navigate, params.advertId]);
 
   const date = new Date(ad.createdAt);
-  const convertedDate = date.toString();
+
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const seconds = date.getSeconds();
+
+  const formatedDate = `${day < 10 ? '0' + day : day}/${
+    month < 10 ? '0' + month : month
+  }/${year} ${hours < 10 ? '0' + hours : hours}:${
+    minutes < 10 ? '0' + minutes : minutes
+  }:${seconds < 10 ? '0' + seconds : seconds}`;
 
   const handleDeleteClick = async event => {
     event.preventDefault();
@@ -87,21 +100,38 @@ function AdvertPage() {
   };
 
   return (
-    <Content title={ad.name}>
-      <div className="advert-photo">
-        <img
-          src={ad.photo || defaultPhotoUrl}
-          alt={ad.name}
-          className="advert-image"
-        />
+    <Content title="Tu anuncio">
+      <div className="advert-header">
+        <div className="advert-name-page">{ad.name}</div>
+        <div className="advert-photo-page">
+          <img
+            src={ad.photo || defaultPhotoUrl}
+            alt={ad.name}
+            className="advert-image-page"
+          />
+        </div>
       </div>
-      <div>{ad.price}€</div>
-      <div> {showSaleCode(ad.sale)} </div>
-      <div>{ad.tags}</div>
-      <div>{convertedDate}</div>
-      <button onClick={handleDeleteClick}>
-        {isFetching ? 'Deleting...' : 'Delete Ad'}
-      </button>
+      <div className="advert-details-page">
+        <div>
+          <div className="advert-sale" style={{ display: 'inline-block' }}>
+            {showSaleCode(ad.sale)}
+          </div>
+          <div className="advert-price" style={{ display: 'inline-block' }}>
+            {ad.price}€
+          </div>
+        </div>
+        <div>
+          <div className="advert-tags" style={{ display: 'inline-block' }}>
+            {ad.tags && ad.tags.length > 0 ? ad.tags.join(', ') : ''}
+          </div>
+          <div className="advert-date" style={{ display: 'inline-block' }}>
+            {formatedDate}
+          </div>
+        </div>
+        <button onClick={handleDeleteClick}>
+          {isFetching ? 'Deleting...' : 'Delete Ad'}
+        </button>
+      </div>
       <ModalQuestion
         isOpen={isModalQuestionOpen}
         onConfirm={handleConfirm}

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './Advert.css';
 
 const Advert = ({ content, name, sale, price, tags, createdAt, photo }) => {
   const defaultPhotoUrl = '/logo512.png';
@@ -21,9 +20,13 @@ const Advert = ({ content, name, sale, price, tags, createdAt, photo }) => {
               className="advert-image"
             />
           </div>
-          <div className="advert-details">
-            <div className="advert-sale">{sale ? 'Venta' : 'Compra'}</div>
-            <div className="advert-price">{price} €</div>
+          <div>
+            <div className="advert-sale" style={{ display: 'inline-block' }}>
+              {sale ? 'Venta' : 'Compra'}
+            </div>
+            <div className="advert-price" style={{ display: 'inline-block' }}>
+              {price} €
+            </div>
           </div>
           <div className="advert-tags">{tags.join(', ')}</div>
           <time dateTime={createdAt}></time>
