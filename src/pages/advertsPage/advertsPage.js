@@ -71,7 +71,7 @@ function AdvertsPage() {
   };
 
   return (
-    <Content title="Anuncios disponible">
+    <Content title="Anuncios disponibles">
       <div className="advertsPage">
         {noResults && adverts.length === 0 && <EmptyList />}
         {!noResults && (

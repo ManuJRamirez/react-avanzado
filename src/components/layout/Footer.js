@@ -1,5 +1,5 @@
 function Footer({ className }) {
-  return <footer className={className}>@2023 Keepcoding</footer>;
+  return <footer className={className}>Entrega React Fundamentos</footer>;
 }
 
 export default Footer;
