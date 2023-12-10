@@ -36,8 +36,8 @@ const Filters = ({ handleFilter }) => {
     setPriceFilter(value);
   };
 
-  const handleMinInputChange = e => {
-    const minVal = parseInt(e.target.value);
+  const handleMinInputChange = event => {
+    const minVal = parseInt(event.target.value);
     const newPriceFilter = [
       minVal > priceFilter[1] ? priceFilter[1] : minVal,
       priceFilter[1],
@@ -45,8 +45,8 @@ const Filters = ({ handleFilter }) => {
     setPriceFilter(newPriceFilter);
   };
 
-  const handleMaxInputChange = e => {
-    const maxVal = parseInt(e.target.value);
+  const handleMaxInputChange = event => {
+    const maxVal = parseInt(event.target.value);
     const newPriceFilter = [
       priceFilter[0],
       maxVal < priceFilter[0] ? priceFilter[0] : maxVal,
@@ -61,7 +61,7 @@ const Filters = ({ handleFilter }) => {
         <input
           type="text"
           value={nameFilter}
-          onChange={e => setNameFilter(e.target.value)}
+          onChange={event => setNameFilter(event.target.value)}
         />
       </label>
       <br />
@@ -69,7 +69,7 @@ const Filters = ({ handleFilter }) => {
         Tipo de transacción:
         <select
           value={transactionFilter}
-          onChange={e => setTransactionFilter(e.target.value)}
+          onChange={event => setTransactionFilter(event.target.value)}
         >
           <option value="all">Todos</option>
           <option value="Venta">Venta</option>

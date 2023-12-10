@@ -67,7 +67,6 @@ function AdvertsPage() {
     }
 
     setFilteredAdverts(filtered);
-    setNoResults(filtered.length === 0);
   };
 
   return (
