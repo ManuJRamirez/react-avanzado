@@ -1,14 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import './Filters.css';
 import Button from '../../components/tools/Button';
+import { getTags } from '../auth/service';
 
 const Filters = ({ handleFilter }) => {
   const [nameFilter, setNameFilter] = useState('');
   const [transactionFilter, setTransactionFilter] = useState('all');
   const [tagsFilter, setTagsFilter] = useState([]);
   const [priceFilter, setPriceFilter] = useState([0, 25000]);
+  const [tags, setTags] = useState([]);
+
+  useEffect(() => {
+    const fetchTags = async () => {
+      try {
+        const tagsData = await getTags();
+        setTags(tagsData);
+      } catch (error) {
+        console.error('Error fetching tags:', error);
+      }
+    };
+    fetchTags();
+  }, []);
 
   const handleApplyFilters = () => {
     handleFilter({
@@ -119,10 +133,12 @@ const Filters = ({ handleFilter }) => {
             )
           }
         >
-          <option value="Lifestyle">Lifestyle</option>
-          <option value="Mobile">Mobile</option>
-          <option value="Motor">Motor</option>
-          <option value="Work">Work</option>
+          {Array.isArray(tags) &&
+            tags.map(tag => (
+              <option key={tag} value={tag}>
+                {tag}
+              </option>
+            ))}
         </select>
       </label>
       <br />

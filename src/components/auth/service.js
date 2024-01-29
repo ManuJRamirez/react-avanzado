@@ -53,3 +53,8 @@ export const deleteOneAdvert = advertId => {
   const url = `${advertsUrl}/${advertId}`;
   return host.delete(url);
 };
+
+export const getTags = () => {
+  const url = `${advertsUrl}/tags`;
+  return host.get(url);
+};

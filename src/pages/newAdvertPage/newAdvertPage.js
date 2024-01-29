@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import './newAdvertPage.css';
 import { postAdvert } from '../../components/auth/service';
 import { useNavigate } from 'react-router';
+import { getTags } from '../../components/auth/service';
 
 const MIN_CHARACTERS = 5;
 
@@ -18,6 +19,19 @@ function NewAdvertPage() {
   const [isFetching, setIsFetching] = useState(false);
   const navigate = useNavigate();
   const counterRef = useRef(0);
+  const [tags, setTags] = useState([]);
+
+  useEffect(() => {
+    const fetchTags = async () => {
+      try {
+        const tagsData = await getTags();
+        setTags(tagsData);
+      } catch (error) {
+        console.error('Error fetching tags:', error);
+      }
+    };
+    fetchTags();
+  }, []);
 
   useEffect(() => {
     counterRef.current++;
@@ -119,10 +133,12 @@ function NewAdvertPage() {
               onChange={handleChange}
               multiple
             >
-              <option value="Lifestyle">Lifestyle</option>
-              <option value="Mobile">Mobile</option>
-              <option value="Motor">Motor</option>
-              <option value="Work">Work</option>
+              {Array.isArray(tags) &&
+                tags.map(tag => (
+                  <option key={tag} value={tag}>
+                    {tag}
+                  </option>
+                ))}
             </select>
           </label>
         </div>
