@@ -12,6 +12,8 @@ export const login = credentials => {
     if (credentials.rememberMe) {
       storage.set('auth', accessToken);
     }
+
+    return credentials.email;
   });
 };
 

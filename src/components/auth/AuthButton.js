@@ -4,10 +4,13 @@ import { useAuth } from './context';
 import { logout } from '../auth/service';
 import ModalQuestion from '../tools/ModalQuestion';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { authLogout } from '../../store/actions';
 
 function AuthButton({ className }) {
   const { onLogout } = useAuth();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [isModalQuestionOpen, setIsModalQuestionOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
 
@@ -16,6 +19,7 @@ function AuthButton({ className }) {
     setModalContent(null);
 
     await logout();
+    dispatch(authLogout());
     onLogout();
     navigate('/login');
   };

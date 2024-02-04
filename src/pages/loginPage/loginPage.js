@@ -5,6 +5,8 @@ import './LoginPage.css';
 import { login } from '../../components/auth/service';
 import { useAuth } from '../../components/auth/context';
 import { useLocation, useNavigate } from 'react-router';
+import { useDispatch } from 'react-redux';
+import { authLogin } from '../../store/actions';
 
 function LoginPage() {
   const { onLogin } = useAuth();
@@ -18,6 +20,9 @@ function LoginPage() {
 
   const { email, password } = credentials;
   const buttonDisabled = !(email && password) || isFetching;
+
+  const dispatch = useDispatch();
+
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -26,7 +31,10 @@ function LoginPage() {
 
     try {
       setIsFeching(true);
-      await login(credentials);
+      const user = await login(credentials);
+      console.log(user);
+      const value = dispatch(authLogin(user));
+      console.log(value);
       setIsFeching(false);
       onLogin();
 
@@ -88,6 +96,7 @@ function LoginPage() {
           />
         </label>
         <Button
+          data-testid="loginButton"
           type="submit"
           $variant="primary"
           disabled={buttonDisabled}
@@ -96,6 +105,7 @@ function LoginPage() {
           {isFetching ? 'Connecting...' : 'Log in'}
         </Button>
         <Button
+          data-testid="signUpButton"
           type="submit"
           $variant="primary"
           disabled={buttonDisabled}

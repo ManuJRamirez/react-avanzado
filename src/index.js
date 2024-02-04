@@ -6,6 +6,8 @@ import { BrowserRouter } from 'react-router-dom';
 import storage from './components/tools/storage';
 import { setAuthorizationHeader } from './api/host';
 import { AuthContextProvider } from './components/auth/context';
+import { Provider } from 'react-redux';
+import store from './store';
 
 const accessToken = storage.get('auth');
 if (accessToken) {
@@ -14,13 +16,15 @@ if (accessToken) {
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
+  <Provider store={store}>
     <BrowserRouter>
       <AuthContextProvider initiallyLogged={!!accessToken}>
         <App />
       </AuthContextProvider>
     </BrowserRouter>
-  </React.StrictMode>,
+  </Provider>,
+  // </React.StrictMode>,
 );
 
 // If you want to start measuring performance in your app, pass a function

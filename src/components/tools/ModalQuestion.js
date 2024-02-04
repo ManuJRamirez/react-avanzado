@@ -24,7 +24,11 @@ const ModalQuestion = ({ isOpen, onConfirm, onCancel, children }) => {
     <div className="modal-overlay">
       <div className="modal">
         {modalContent}
-        <button className="accept-button" onClick={confirmModal}>
+        <button
+          data-testid="confirmButton"
+          className="accept-button"
+          onClick={confirmModal}
+        >
           Confirmar
         </button>
         <button className="accept-button" onClick={cancelModal}>

@@ -4,6 +4,8 @@ import 'rc-slider/assets/index.css';
 import './Filters.css';
 import Button from '../../components/tools/Button';
 import { getTags } from '../auth/service';
+import { useDispatch } from 'react-redux';
+import { getTagsData } from '../../store/actions';
 
 const Filters = ({ handleFilter }) => {
   const [nameFilter, setNameFilter] = useState('');
@@ -11,18 +13,20 @@ const Filters = ({ handleFilter }) => {
   const [tagsFilter, setTagsFilter] = useState([]);
   const [priceFilter, setPriceFilter] = useState([0, 25000]);
   const [tags, setTags] = useState([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchTags = async () => {
       try {
         const tagsData = await getTags();
         setTags(tagsData);
+        dispatch(getTagsData(tagsData));
       } catch (error) {
         console.error('Error fetching tags:', error);
       }
     };
     fetchTags();
-  }, []);
+  }, [dispatch]);
 
   const handleApplyFilters = () => {
     handleFilter({

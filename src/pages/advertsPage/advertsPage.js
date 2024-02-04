@@ -6,6 +6,8 @@ import { getAllAdverts } from '../../components/auth/service';
 import Advert from '../../components/layout/Advert';
 import Content from '../../components/layout/Content';
 import Filters from '../../components/tools/Filters';
+import { useDispatch } from 'react-redux';
+import { getAdList } from '../../store/actions';
 
 const EmptyList = () => (
   <div className="no-results">
@@ -20,14 +22,23 @@ function AdvertsPage() {
   const [adverts, setAdverts] = useState([]);
   const [filteredAdverts, setFilteredAdverts] = useState([]);
   const [noResults, setNoResults] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    getAllAdverts().then(adverts => {
-      setAdverts(adverts);
-      setFilteredAdverts(adverts);
-      setNoResults(adverts.length === 0);
-    });
-  }, []);
+    const fetchData = async () => {
+      try {
+        const fetchedAdverts = await getAllAdverts();
+        setAdverts(fetchedAdverts);
+        setFilteredAdverts(fetchedAdverts);
+        setNoResults(fetchedAdverts.length === 0);
+        dispatch(getAdList(fetchedAdverts));
+      } catch (error) {
+        console.error('Error fetching adverts:', error);
+      }
+    };
+
+    fetchData();
+  }, [dispatch]);
 
   const handleFilter = filters => {
     let filtered = [...adverts];
@@ -67,6 +78,7 @@ function AdvertsPage() {
     }
 
     setFilteredAdverts(filtered);
+    dispatch(getAdList(filtered));
   };
 
   return (

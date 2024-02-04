@@ -18,6 +18,14 @@ const storage = {
   clear() {
     localStorage.clear();
   },
+
+  getAds() {
+    return this.get('ads') || [];
+  },
+
+  setAds(ads) {
+    this.set('ads', ads);
+  },
 };
 
 export default storage;

@@ -5,6 +5,8 @@ import './newAdvertPage.css';
 import { postAdvert } from '../../components/auth/service';
 import { useNavigate } from 'react-router';
 import { getTags } from '../../components/auth/service';
+import { useDispatch } from 'react-redux';
+import { createAd } from '../../store/actions';
 
 const MIN_CHARACTERS = 5;
 
@@ -19,6 +21,7 @@ function NewAdvertPage() {
   const [isFetching, setIsFetching] = useState(false);
   const navigate = useNavigate();
   const counterRef = useRef(0);
+  const dispatch = useDispatch();
   const [tags, setTags] = useState([]);
 
   useEffect(() => {
@@ -71,6 +74,7 @@ function NewAdvertPage() {
     try {
       setIsFetching(true);
       const advert = await postAdvert(formData);
+      dispatch(createAd(advert));
       navigate(`../${advert.id}`, { relative: 'path' });
     } catch (error) {
       if (error.status === 401) {

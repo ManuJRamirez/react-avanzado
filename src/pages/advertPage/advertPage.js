@@ -5,6 +5,8 @@ import { deleteOneAdvert, getOneAdvert } from '../../components/auth/service';
 import ModalQuestion from '../../components/tools/ModalQuestion';
 import Modal from '../../components/tools/Modal';
 import './advertPage.css';
+import { useDispatch } from 'react-redux';
+import { getAdDetails, deleteAd } from '../../store/actions';
 
 function AdvertPage() {
   const params = useParams();
@@ -15,16 +17,24 @@ function AdvertPage() {
   const [isModalQuestionOpen, setIsModalQuestionOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const defaultPhotoUrl = '/logo512.png';
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    getOneAdvert(params.advertId)
-      .then(ad => setAd(ad))
-      .catch(error => {
-        if (error.response.status === 404) {
+    const fetchData = async () => {
+      try {
+        const ad = await getOneAdvert(params.advertId);
+        setAd(ad);
+        console.log(ad);
+        dispatch(getAdDetails(ad));
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
           navigate('/404');
         }
-      });
-  }, [navigate, params.advertId]);
+      }
+    };
+
+    fetchData();
+  }, [dispatch, navigate, params.advertId]);
 
   const date = new Date(ad.createdAt);
 
@@ -53,6 +63,8 @@ function AdvertPage() {
       setIsFeching(true);
       await deleteOneAdvert(params.advertId);
       setIsFeching(false);
+      console.log(params.advertId);
+      dispatch(deleteAd(params.advertId));
       openSuccessModal();
     } catch (error) {
       openErrorModal();
@@ -128,7 +140,7 @@ function AdvertPage() {
             {formatedDate}
           </div>
         </div>
-        <button onClick={handleDeleteClick}>
+        <button data-testid="deleteButton" onClick={handleDeleteClick}>
           {isFetching ? 'Deleting...' : 'Delete Ad'}
         </button>
       </div>
